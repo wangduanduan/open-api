@@ -124,7 +124,7 @@ GET http://callbackURL/?signature={{signature}}&timestamp={{timestamp}}&nonce={{
 1.	将token、timestamp、nonce三个参数进行字典序排序。
 2.	将三个参数字符串拼接成一个字符串进行sha1加密。
 3.	开发者获得加密后的字符串可与signature对比，如果相同，则说明数据是从我们平台发出的。
-4.	返回echostr（随机字符串），返回示例：`{"result":"abxfewsvt23v7sxw"}`。如果无需校验，可在收到get请求后，跳过1，2，3步骤，直接安装示例格式返回echostr（随机字符串）
+4.	返回echostr（随机字符串），返回示例：`{"result":"abxfewsvt23v7sxw"}`。如果无需校验，可在收到get请求后，跳过1，2，3步骤，直接按照示例格式返回echostr（随机字符串）
 
 **sha1 算法 （java）**
 
