@@ -14,6 +14,9 @@
   - [3.4 呼叫类型表格](#34-呼叫类型表格)
   - [3.5 挂机原因表格](#35-挂机原因表格)
   - [3.6 呼叫失败码表格](#36-呼叫失败码表格)
+- [4 录音相关接口](#4-录音相关接口)
+  - [4.1 录音查询](#41-录音查询)
+  - [4.2 录音流下载与调听](#42-录音流下载与调听)
 
 <!-- /TOC -->
 
@@ -49,9 +52,9 @@ type | 是 | 租户类型。partner代表合作伙伴，tenant表示租户
 
 **响应体说明**
 
-名称 | 是否必须 | 说明
----|---|---
-token | 是 | token
+名称 | 说明
+---|---
+token | token
 
 # 2 事件订阅接口与回调地址验证
 
@@ -269,7 +272,7 @@ call | object | 是 | 通话详细信息
 
 参数 | 类型 | 是否必须 | 描述
 ---|---|--- | ---
-id | string | 是 | 呼叫id
+id | string | 是 | callId。呼叫id
 callType | enum string | 是 | 呼叫类型。参加下面的呼叫类型表格
 ani | string | 是 | 主叫号码
 dnis | string | 是 | 被叫号码
@@ -338,4 +341,92 @@ Unknown | 未知
 12 | 短音忙
 13 | 长音忙
 14 | 其他
+
+# 4 录音相关接口
+## 4.1 录音查询
+
+**请求示例**
+
+请求头部字段`Authorization`字段值即申请到的`token`值
+
+```
+// general
+GET http://tpiag.wellcloud.cc/p/api/operation/tenant/calls/{{callId}}/recordings2
+
+// request headers
+Authorization: 12345678
+
+// response
+[
+  {
+    "id": "a0981ac5-b1ec-495c-a17f-0d28f5ccef3d",
+    "ani": "8010@zhen04.cc",
+    "dnis": "933255490@zhen04.cc",
+    "callDirection": "Outbound",
+    "startTime": "2018.01.29 16:08:23",
+    "endTime": "2018.01.29 16:08:34",
+    "callLength": 10,
+    "fileSize": 0,
+    "deviceId": "8010@zhen04.cc",
+    "callId": "c19e9298-fb83-445f-8206-19b59ea7e337",
+    "state": "Success",
+    "tenantId": "61739917-7ba2-43e9-b81a-5a8eb41461b4"
+  }
+]
+```
+
+**路径与查询字符串参数模型**
+
+`GET http://tpiag.wellcloud.cc/p/api/operation/tenant/calls/{{callId}}/recordings2`
+
+名称 | 是否必须 | 说明
+---|---|---
+callId | 是 | callId
+
+**响应体说明**
+
+由于一个callId可能会有多段录音，所以返回的响应体是一个数组。录音数据模型说明。
+
+名称 | 说明
+---|---
+id | 录音id
+ani | 主叫
+dnis | 被叫
+callDirection | 呼叫方向
+startTime | 开始时间
+endTime | 结束时间
+callLength | 呼叫时长
+fileSize | 文件大小
+deviceId | 设备Id
+callId | callId
+state | 状态
+tenantId | 租户id
+
+## 4.2 录音流下载与调听
+
+**请求示例**
+
+```
+// general
+GET http://console.wellcloud.cc/p/api/operation/tenant/recording/{{audioId}}/stream2?download=false
+
+// request headers
+Authorization: 12345678
+
+// response
+stream
+```
+
+**路径与查询字符串参数模型**
+
+`GET http://console.wellcloud.cc/p/api/operation/tenant/recording/{{audioId}}/stream2?download={{downlaod}}`
+
+名称 | 是否必须 | 说明
+---|---|---
+audioId | 是 | 录音id
+download | 是 | 是否需要下载。true表示下载，false表示不下载(默认)
+
+
+**响应体说明**
+响应体是以流的形式下载或调听
 
