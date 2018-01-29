@@ -38,6 +38,7 @@ POST http://tpiag.wellcloud.cc/p/api/operation/operation/apply/token?appId=abcde
 ```
 
 **1.2 路径与查询字符串参数模型**
+
 `POST http://tpiag.wellcloud.cc/p/api/operation/operation/apply/token?appId={{appId}}&appSecret={{appSecret}}&type={{type}}`
 
 名称 | 是否必须 | 说明
@@ -47,6 +48,7 @@ appSecret | 是 | appSecret
 type | 是 | 租户类型。partner代表合作伙伴，tenant表示租户
 
 **响应体说明**
+
 名称 | 是否必须 | 说明
 ---|---|---
 token | 是 | token
@@ -82,6 +84,7 @@ Content-Type: application/json
 ```
 
 **路径与查询字符串参数模型**
+
 `POST http://tpiag.wellcloud.cc/p/api/operation/tenant/createSubscription`
 
 **请求体说明**
@@ -116,7 +119,9 @@ GET http://callbackURL/?signature={{signature}}&timestamp={{timestamp}}&nonce={{
 2.	将三个参数字符串拼接成一个字符串进行sha1加密。
 3.	开发者获得加密后的字符串可与signature对比，如果相同，则说明数据是从我们平台发出的。
 4.	返回echostr（随机字符串），返回示例：`{"result":"abxfewsvt23v7sxw"}`。如果无需校验，可在收到get请求后，跳过1，2，3步骤，直接安装示例格式返回echostr（随机字符串）
+
 **sha1 算法 （java）**
+
 ```
 public final class SHA1 {    
     private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5',  
@@ -150,7 +155,10 @@ public final class SHA1 {
     }  
 }  
 ```
+
 **接口验证示例 （java）**
+
+
 ```
 
 @GET
@@ -187,6 +195,7 @@ public String checkSignature(@Context HttpServletRequest request,
 
 
 # 3 呼叫数据示例与模型说明
+
 在每通电话结束以后，WellCloud平台会向第三方回调地址推送电话的呼叫数据，数据格式是JSON。
 
 ## 3.1 呼叫数据示例
@@ -307,6 +316,7 @@ Redirect | 重定向
 Unknown | 未知
 
 ## 3.6 呼叫失败码表格
+
 编码 | 说明
 ---|---
 -4 | 挂断
