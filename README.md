@@ -354,7 +354,7 @@ Unknown | 未知
 
 ```
 // general
-GET http://tpiag.wellcloud.cc/p/api/operation/tenant/calls/{{callId}}/recordings2
+GET http://tpiag.wellcloud.cc/p/api/operation/tenant/calls/c19e9298-fb83-445f-8206-19b59ea7e337/recordings2
 
 // request headers
 Authorization: 12345678
