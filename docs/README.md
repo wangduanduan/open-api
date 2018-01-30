@@ -391,7 +391,7 @@ tenantId | 租户id
 
 ```
 // general
-GET http://console.wellcloud.cc/p/api/operation/tenant/recording/{{audioId}}/stream2?download=false
+GET http://tpiag.wellcloud.cc/p/api/operation/tenant/recording/{{audioId}}/stream2?download=false
 
 // request headers
 Authorization: 12345678
@@ -402,7 +402,7 @@ stream
 
 **路径与查询字符串参数模型**
 
-`GET http://console.wellcloud.cc/p/api/operation/tenant/recording/{{audioId}}/stream2?download={{downlaod}}`
+`GET http://tpiag.wellcloud.cc/p/api/operation/tenant/recording/{{audioId}}/stream2?download={{downlaod}}`
 
 名称 | 是否必须 | 说明
 ---|---|---
