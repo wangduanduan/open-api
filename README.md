@@ -1,6 +1,6 @@
 # WellCloud慧捷云联络中心技术文档
 
-[点击此处、查看在线文档网页](https://wdd.js.org/open-api/#/)
+[点击此处、查看在线文档](https://wdd.js.org/open-api/#/)
 
 # 目录
 
