@@ -1,9 +1,9 @@
-# WellCloud慧捷云联络中心第三方集成接口文档
+# 1. WellCloud慧捷云联络中心第三方集成接口文档
 
 > 文档格式说明
 > url中类似/user/{{id}}/，表示最终{{id}}需要用实际的id来替换。例如：/user/12345678/
 
-# 1 申请Token
+# 2. 申请Token
 Token是WellCloud平台的全局唯一接口调用凭据，第三方调用各接口时都需使用Token, Token的过期时间是24小时。获取Token需要appId和appSecret，这两个字段在登陆租户控制台后，可以在联络中心管理菜单下 -> 第三方系统集成配置中找到。
 
 在成功获取token后，随后的所有请求都需要带有一个头部信息
@@ -16,6 +16,9 @@ Authorization: token
 ```
 // general
 POST http://tpiag.wellcloud.cc/p/api/operation/operation/apply/token?appId=abcdefg&appSecret=123456&type=tenant
+
+// request headers
+Content-Type: application/json;charset=utf-8
 
 // response
 {
@@ -39,9 +42,17 @@ type | 是 | 租户类型。partner代表合作伙伴，tenant表示租户
 ---|---
 token | token
 
-# 2 事件订阅接口与回调地址验证
 
-## 2.1 挂断事件订阅
+**异常响应与解决方案**
+
+异常响应体 | 问题原因 |解决方案
+--- | --- | ---
+{"message":"RESTEASY003065: Cannot consume content type","code":"500"} | 发送的请求Content-Type有问题，导致服务端无法解析 | 请检查发送的数据 Content-Type 头的值是否是 application/json;charset=utf-8
+
+
+# 3. 事件订阅接口与回调地址验证
+
+## 3.1. 挂断事件订阅
 
 **请求示例**
 
@@ -53,7 +64,7 @@ POST http://tpiag.wellcloud.cc/p/api/operation/tenant/createSubscription
 
 // request headers
 Authorization: 12345678
-Content-Type: application/json
+Content-Type: application/json;charset=utf-8
 
 // request body
 {
@@ -91,7 +102,8 @@ id | 否 | 唯一订阅标识
 subscriptionId | 订阅成功后返回订阅id
 
 
-## 2.2 回调地址验证
+
+## 3.2. 回调地址验证
 
 订阅事件过程中，WellCloud平台会发送验证的GET请求到服务器配置的URL上，GET请求携带四个参数：signature（签名）、timestamp（当前时间戳）、nonce（随机数）、echostr（随机字符串）
 
@@ -180,11 +192,11 @@ public String checkSignature(@Context HttpServletRequest request,
 ```
 
 
-# 3 呼叫数据示例与模型说明
+# 4. 呼叫数据示例与模型说明
 
 在每通电话结束以后，WellCloud平台会向第三方回调地址推送电话的呼叫数据，数据格式是JSON。
 
-## 3.1 呼叫数据示例
+## 4.1. 呼叫数据示例
 
 ```
 {
@@ -238,7 +250,7 @@ public String checkSignature(@Context HttpServletRequest request,
 
 ```
 
-## 3.2 呼叫数据字段说明
+## 4.2. 呼叫数据字段说明
 
 > 表格中没有说明字段请不要使用
 
@@ -249,7 +261,7 @@ eventTime | string | 是 | 事件推送时间
 eventType | string | 是 | 事件类型(Call)
 call | object | 是 | 通话详细信息
 
-## 3.3 call对象字段说明
+## 4.3. call对象字段说明
 
 > 所有时长单位都是秒
 
@@ -279,7 +291,7 @@ namespace | string | 是 | 租户域名
 firstAgentId | string | 是 | 第一次接听电话的座席号（如果座席没有登录，直接使用分机，不会推送）
 attchedData | object | 是 | 随路数据
 
-## 3.4 呼叫类型表格
+## 4.4. 呼叫类型表格
 
 名称 | 说明
 ---|---
@@ -290,7 +302,7 @@ Offhook | 摘机
 PreOccupied | 预占式外呼
 PreDictive | 预测式外呼
 
-## 3.5 挂机原因表格
+## 4.5. 挂机原因表格
 
 名称 | 说明
 ---|---
@@ -301,7 +313,7 @@ ExtDrop | 分机挂断
 Redirect | 重定向
 Unknown | 未知
 
-## 3.6 呼叫失败码表格
+## 4.6. 呼叫失败码表格
 
 编码 | 说明
 ---|---
@@ -325,8 +337,8 @@ Unknown | 未知
 13 | 长音忙
 14 | 其他
 
-# 4 录音相关接口
-## 4.1 根据callId查询录音
+# 5. 录音相关接口
+## 5.1. 根据callId查询录音
 
 **请求示例**
 
@@ -338,6 +350,7 @@ GET http://tpiag.wellcloud.cc/p/api/operation/tenant/calls/c19e9298-fb83-445f-82
 
 // request headers
 Authorization: 12345678
+Content-Type: application/json;charset=utf-8
 
 // response
 [
@@ -375,17 +388,17 @@ callId | 是 | callId
 id | 录音id
 ani | 主叫
 dnis | 被叫
-callDirection | 呼叫方向
+callDirection | 呼叫方向。Inbound表示呼入，Outbound表示呼出，Internal表示分机间内部呼叫，Offhook表示摘机，PreOccupied表示预占式外呼，PreDictive表示预测式外呼
 startTime | 开始时间
 endTime | 结束时间
 callLength | 呼叫时长
 fileSize | 文件大小
-deviceId | 设备Id
+deviceId | 设备Id。指分机id, 如8001@test.cc
 callId | callId
-state | 状态
+state | 状态。Fail表示失败，Success表示成功
 tenantId | 租户id
 
-## 4.2 录音流下载与调听
+## 5.2. 录音流下载与调听
 
 **请求示例**
 
@@ -413,9 +426,9 @@ download | 是 | 是否需要下载。true表示下载，false表示不下载(�
 **响应体说明**
 响应体是以流的形式下载或调听
 
-# 5 自动外呼
+# 6. 自动外呼
 
-## 5.1 名单上传
+## 6.1. 名单上传
 
 **请求示例**
 
