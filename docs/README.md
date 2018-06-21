@@ -1,3 +1,5 @@
+# 本文档不再维护，请移步查看最新文档，地址：https://wellcloud-docs.github.io/open-api/#/
+
 # 1. WellCloud慧捷云联络中心第三方集成接口文档
 
 > 文档格式说明
